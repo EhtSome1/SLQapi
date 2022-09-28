@@ -11,7 +11,7 @@ namespace sqltest
             string userId;
             string password;
 
-            int vast;
+            int vast = 0;
 
             try
             {
@@ -34,27 +34,69 @@ namespace sqltest
                 {
                     Console.WriteLine(userId);
 
-                    Console.WriteLine("\nQuery data example:");
+                    Console.WriteLine("\nQuery data:");
                     Console.WriteLine("=========================================\n");
-
-                    String sql = "SELECT * FROM alponTaulu";
+                    Console.Write("Anna taulu: ");
+                    string taulu = Console.ReadLine();
+                    String sql = "SELECT * FROM " + taulu;
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-
                         connection.Open();
-                        while(true)
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            using (SqlDataReader reader = command.ExecuteReader())
+                            while (vast != 9)
                             {
-                                vast = Convert.ToInt32(Console.ReadLine());
+                                Console.WriteLine("1. 1.column");
+                                Console.WriteLine("2. 2.column");
+                                Console.WriteLine("3. 3.column");
+                                Console.WriteLine("3. 4.column");
+                                Console.WriteLine("9. Loppu");
 
-                                while (reader.Read())
+                                vast = Convert.ToInt32(Console.ReadLine());
+                                switch (vast)
                                 {
-                                    Console.WriteLine(reader.GetValue(vast).ToString());
+                                    case 1:
+                                        Console.WriteLine("ID");
+                                        while (reader.Read())
+                                        {
+                                            Console.WriteLine(reader.GetValue(vast));
+                                        }
+                                        break;
+
+                                    case 2:
+                                        Console.WriteLine("username");
+                                        while (reader.Read())
+                                        {
+                                            Console.WriteLine(reader.GetValue(vast));
+                                        }
+                                        break;
+                                    case 3:
+                                        Console.WriteLine("password");
+                                        while (reader.Read())
+                                        {
+                                            Console.WriteLine(reader.GetValue(vast));
+                                        }
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("update date");
+                                        while (reader.Read())
+                                        {
+                                            Console.WriteLine(reader.GetValue(vast));
+                                        }
+                                        break;
+                                    case 9:
+                                        Console.WriteLine("Heippa!");
+                                        break;
+
+                                    default:
+                                        Console.WriteLine("Antamallasi numerolla ei ole mitään!");
+                                        break;
                                 }
+
                             }
-                        }
+
+                         }
 
                     }
                 }
